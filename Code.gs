@@ -79,9 +79,7 @@ function copyOperatorCaseToKk(projectKwargs, operatorFundusSpreadsheet, operatio
     if (clinicValue.length != 0) {
       let bukuDaftarSheet = SpreadsheetApp.openByUrl(projectKwargs[clinicKey]).getSheetByName(intent[operation].bukuDaftarSheetName);
       addValuesToSheet(bukuDaftarSheet, clinicValue, bukuDaftarSheet.getLastRow()+1, 1);
-      if (operation == 'defaulter') {
-        setFormulaToWholeColumn(bukuDaftarSheet, 'P', 3, '=IFERROR(VLOOKUP(F2,rawNDR!$A:$E,5,0),"")');
-      };
+      setFormulaToWholeColumn(bukuDaftarSheet, 'P', 3, '=IFERROR(VLOOKUP(F3,rawNDR!$A:$E,5,0),"")');
     };
   });
 }
@@ -97,7 +95,14 @@ function caseReviewCleanup(bukuDaftarSpreadsheet) {
   // Select doneReview case
   let doneValues = new Array();
   let notDoneValues = new Array();
-  let dataRange = toReviewSheet.getRange(3, 1, toReviewSheet.getLastRow()-2, toReviewSheet.getMaxColumns());
+
+  let dataRange;
+  let toReviewSheetLastRow = toReviewSheet.getLastRow();
+  if (toReviewSheetLastRow > 3) {
+    dataRange = toReviewSheet.getRange(3, 1, toReviewSheetLastRow-2, toReviewSheet.getMaxColumns());
+  } else {
+    dataRange = toReviewSheet.getRange('3:3');
+  }
   let dataRangeValues = dataRange.getValues();
   dataRangeValues.forEach(item => {
     if (item[29] == 'Selesai') {
@@ -116,7 +121,7 @@ function caseReviewCleanup(bukuDaftarSpreadsheet) {
     toReviewSheet.deleteRows(4, toReviewSheet.getMaxRows()-3);
   };
   addValuesToSheet(toReviewSheet, notDoneValues, 3, 1);
-  setFormulaToWholeColumn(toReviewSheet, 'P', 3, '=IFERROR(VLOOKUP(F2,rawNDR!$A:$E,5,0),"")');
+  setFormulaToWholeColumn(toReviewSheet, 'P', 3, '=IFERROR(VLOOKUP(F3,rawNDR!$A:$E,5,0),"")');
 }
 
 /**
@@ -141,7 +146,7 @@ function triggerClinicCleanup() {
   let listedClinic = [
     'kk_temerloh',
     'kk_tanjung_lalang',
-    'kk_bandar_mentaab',
+    'kk_bandar_mentakab',
     'kk_lanchang',
     'kk_sanggang',
     'kk_kerdau',
