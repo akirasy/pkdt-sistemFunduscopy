@@ -135,6 +135,11 @@ function triggerOperatorToClinic() {
   // Do note that it is important to run for sheet defaulter first only then proceed to sheet selesai
   copyOperatorCaseToKk(projectKwargs, operatorFundusTemerloh, 'defaulter');
   copyOperatorCaseToKk(projectKwargs, operatorFundusTemerloh, 'selesai');
+
+  let operatorFundusMentakab = SpreadsheetApp.openByUrl(projectKwargs['operator_fundus_mentakab']);
+  // Do note that it is important to run for sheet defaulter first only then proceed to sheet selesai
+  copyOperatorCaseToKk(projectKwargs, operatorFundusMentakab, 'defaulter');
+  copyOperatorCaseToKk(projectKwargs, operatorFundusMentakab, 'selesai');
 }
 
 /**
